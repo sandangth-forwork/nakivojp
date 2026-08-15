@@ -1,0 +1,10 @@
+app:
+  rds:
+    username: ${POSTGRESQL_USER}
+    password: ${POSTGRESQL_PASSWORD}
+    database: ${POSTGRESQL_DB}
+    host: ${POSTGRESQL_H0ST}
+    port: ${POSTGRESQL_PORT}
+  cache:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}

@@ -1,0 +1,127 @@
+networks:
+  nakivojp-network:
+    driver: bridge
+volumes:
+  postgresql-volume:
+  redis-volume:
+  rabbitmq-volume:
+
+services:
+  postgresql:
+    container_name: nakivojp-postgresql
+    build:
+      context: ./postgresql
+      dockerfile: Dockerfile
+    ports:
+      - ${POSTGRESQL_PORT}:5432
+    volumes:
+      - postgresql-volume:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_MULTIPLE_DATABASES: ${POSTGRESQL_DB}
+    networks:
+      - nakivojp-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRESQL_USER} -d postgres" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+  redis:
+    container_name: nakivojp-redis
+    image: redis:8.8.1-trixie
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - nakivojp-network
+    volumes:
+      - redis-volume:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+
+  rabbitmq:
+    container_name: nakivojp-rabbitmq
+    hostname: rabbitmq
+    image: docker.io/rabbitmq:4.3.4-management-alpine
+    ports:
+      - ${RABBITMQ_PORT}:5672
+      - ${RABBITMQ_MANAGEMENT_PORT}:15672
+    volumes:
+      - rabbitmq-volume:/var/lib/rabbitmq
+    networks:
+      - nakivojp-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # adh-user-management:
+  #   container_name: adh-user-management
+  #   build:
+  #     context: ../..
+  #     dockerfile: adh-user-management/Dockerfile.local
+  #   ports:
+  #     - ${ADH_USER_MANAGEMENT_PORT}:8383
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+  #     POSTGRESQL_ADH_DB: ${POSTGRESQL_ADH_DB}
+  #     POSTGRESQL_USER: ${POSTGRESQL_USER}
+  #     POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+  #     POSTGRESQL_HOST: postgresql
+  #     POSTGRESQL_PORT: 5432
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #   networks:
+  #     - adh-network
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+  #   depends_on:
+  #     postgresql:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8383/api/user-management/actuator/health" ]
+  #     interval: 5s
+  #     timeout: 30s
+  #     retries: 3
+  #     start_period: 40s
+
+  # adh-asset-management:
+  #   container_name: adh-asset-management
+  #   build:
+  #     context: ../..
+  #     dockerfile: adh-asset-management/Dockerfile.local
+  #   ports:
+  #     - ${ADH_ASSET_MANAGEMENT_PORT}:8382
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+  #     POSTGRESQL_ADH_DB: ${POSTGRESQL_ADH_DB}
+  #     POSTGRESQL_USER: ${POSTGRESQL_USER}
+  #     POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+  #     POSTGRESQL_HOST: postgresql
+  #     POSTGRESQL_PORT: 5432
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #   networks:
+  #     - adh-network
+  #   depends_on:
+  #     postgresql:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8382/api/asset-management/actuator/health" ]
+  #     interval: 5s
+  #     timeout: 30s
+  #     retries: 3
+  #     start_period: 40s

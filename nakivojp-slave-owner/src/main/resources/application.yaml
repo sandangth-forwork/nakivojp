@@ -1,0 +1,55 @@
+server:
+  port: 9090
+  servlet.context-path: /api
+
+spring:
+  main:
+    banner-mode: console
+  application:
+    name: nakivojp
+    version: 1.0.0-SNAPSHOT
+  datasource:
+    url: jdbc:postgresql://${app.rds.host}:${app.rds.port}/${app.rds.database}?currentSchema=public
+    username: ${app.rds.username}
+    password: ${app.rds.password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      format_sql: true
+    hikari:
+      idle-timeout: 30000
+      minimum-idle: 20
+      maximum-pool-size: 100
+      max-lifetime: 200000
+      connection-timeout: 30000
+      initialization-fail-timeout: 0
+  flyway:
+    enabled: true
+    table: flyway_schema_history
+    default-schema: public
+    connect-retries: 100
+    user: ${app.rds.username}
+    schemas: public
+    password: ${app.rds.password}
+    locations: classpath:db/migration/public
+    baseline-on-migrate: true
+    url: jdbc:postgresql://${app.rds.host}:${app.rds.port}/${app.rds.database}?currentSchema=public
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+management:
+  info:
+    env.enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure.include: health,info,metrics
+
+info:
+  app:
+    name: Nakivo Job Processing Service
+    version: ${BUILD_VERSION:1.0.0-SNAPSHOT}
