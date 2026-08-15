@@ -6,7 +6,7 @@ spring:
   main:
     banner-mode: console
   application:
-    name: nakivojp
+    name: nakivojp-slave-owner
     version: 1.0.0-SNAPSHOT
   datasource:
     url: jdbc:postgresql://${app.rds.host}:${app.rds.port}/${app.rds.database}?currentSchema=public
@@ -36,6 +36,44 @@ spring:
     locations: classpath:db/migration/public
     baseline-on-migrate: true
     url: jdbc:postgresql://${app.rds.host}:${app.rds.port}/${app.rds.database}?currentSchema=public
+  cloud:
+    function:
+      definition: sendJobResultHandler
+    stream:
+      default-binder: rabbit-binder
+      binders:
+        rabbit-binder:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: ${app.job-queue.host}
+                port: ${app.job-queue.port}
+                username: guest
+                password: guest
+                virtual-host: /
+      bindings:
+        sendEmail-out-0:
+          binder: rabbit-binder
+          destination: slave-owner.send-email
+        sendSms-out-0:
+          binder: rabbit-binder
+          destination: slave-owner.send-sms
+        syncExternalData-out-0:
+          binder: rabbit-binder
+          destination: slave-owner.sync-external-data
+        scrapeWebsite-out-0:
+          binder: rabbit-binder
+          destination: slave-owner.scrape-website
+        processVideo-out-0:
+          binder: rabbit-binder
+          destination: slave-owner.process-video
+        cleanupTempFile-out-0:
+          binder: rabbit-binder
+          destination: slave-owner.cleanup-temp-file
+        sendJobResultHandler-in-0:
+          binder: rabbit-binder
+          destination: slave.send-job-result
 
 springdoc:
   swagger-ui:

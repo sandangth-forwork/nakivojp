@@ -45,9 +45,11 @@ public class Job {
     private JsonNode payload;
     @Column(name = "error_message", nullable = false)
     private String errorMessage;
+    @Column(name = "request_hash")
+    private String requestHash;
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
     @LastModifiedDate

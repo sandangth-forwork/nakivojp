@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS "job" (
   "retry_count" BIGINT NOT NULL,
   "payload" JSONB,
   "error_message" VARCHAR,
+  "request_hash" VARCHAR,
   "created_at" TIMESTAMPTZ NOT NULL,
-  "updated_at" TIMESTAMPTZ NOT NULL,
+  "updated_at" TIMESTAMPTZ NOT NULL
 );

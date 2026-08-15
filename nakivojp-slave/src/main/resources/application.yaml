@@ -1,0 +1,61 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  main:
+    banner-mode: console
+  application:
+    name: nakivojp-slave
+    version: 1.0.0-SNAPSHOT
+  cloud:
+    function:
+      definition: sendEmailJobHandler;sendSmsJobHandler;syncExternalDataJobHandler;scrapeWebsiteJobHandler;processVideoJobHandler;cleanupTempFileJobHandler
+    stream:
+      default-binder: rabbit-binder
+      binders:
+        rabbit-binder:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: ${app.job-queue.host}
+                port: ${app.job-queue.port}
+                username: guest
+                password: guest
+                virtual-host: /
+      bindings:
+        sendEmailJobHandler-in-0:
+          binder: rabbit-binder
+          destination: slave-owner.send-email
+        sendSmsJobHandler-in-0:
+          binder: rabbit-binder
+          destination: slave-owner.send-sms
+        syncExternalDataJobHandler-in-0:
+          binder: rabbit-binder
+          destination: slave-owner.sync-external-data
+        scrapeWebsiteJobHandler-in-0:
+          binder: rabbit-binder
+          destination: slave-owner.scrape-website
+        processVideoJobHandler-in-0:
+          binder: rabbit-binder
+          destination: slave-owner.process-video
+        cleanupTempFileJobHandler-in-0:
+          binder: rabbit-binder
+          destination: slave-owner.cleanup-temp-file
+        sendJobResult-out-0:
+          binder: rabbit-binder
+          destination: slave.send-job-result
+
+management:
+  info:
+    env.enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure.include: health,info,metrics
+
+info:
+  app:
+    name: Nakivo Job Processing Service
+    version: ${BUILD_VERSION:1.0.0-SNAPSHOT}

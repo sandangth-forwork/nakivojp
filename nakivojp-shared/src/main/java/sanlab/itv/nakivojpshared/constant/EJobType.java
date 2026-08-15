@@ -1,5 +1,6 @@
 package sanlab.itv.nakivojpshared.constant;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public enum EJobType {
@@ -14,6 +15,7 @@ public enum EJobType {
     ;
 
     public static EJobType fromStr(String type) {
+        if (ObjectUtils.isEmpty(type)) return UNKNOWN;
         try {
             return EJobType.valueOf(StringUtils.upperCase(type));
         } catch (IllegalArgumentException e) {

@@ -1,16 +1,13 @@
 package sanlab.itv.nakivojpslaveowner.exception;
 
-public class ServiceUnavailableException extends AbstractException {
-
-    private final String msg;
+public class ServiceUnavailableException extends NakivoJpRuntimeException {
 
     public ServiceUnavailableException(String msg) {
         super(msg);
-        this.msg = msg;
     }
 
-    @Override
-    public String message() {
-        return this.msg;
+    public ServiceUnavailableException(Throwable throwable, String msg) {
+        super(throwable, msg);
     }
+
 }

@@ -1,0 +1,7 @@
+app:
+  cache:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+  job-queue:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
