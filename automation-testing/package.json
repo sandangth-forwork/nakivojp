@@ -1,0 +1,25 @@
+{
+  "name": "NakivoJp api tests",
+  "version": "1.0.0",
+  "description": "Playwright + TypeScript API test suite for the Jobs API",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:jobs": "playwright test tests",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  }
+}

@@ -1,5 +1,7 @@
 package sanlab.itv.nakivojpslaveowner.exception;
 
+import sanlab.itv.nakivojpshared.exception.NakivoJpRuntimeException;
+
 public class DataNotFoundException extends NakivoJpRuntimeException {
 
     private static final String JOB_WITH_ID_NOT_FOUND = "Job with ID %s not found";

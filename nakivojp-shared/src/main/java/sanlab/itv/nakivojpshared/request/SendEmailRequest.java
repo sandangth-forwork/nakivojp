@@ -33,6 +33,7 @@ public class SendEmailRequest implements CreateJobRequest {
         private String recipient;
         private String subject;
         private String body;
+        private Boolean fail;
     }
 
 }

@@ -1,5 +1,6 @@
 package sanlab.itv.nakivojpslaveowner.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sanlab.itv.nakivojpshared.request.CollectionQueryRequest;
+import sanlab.itv.nakivojpslaveowner.dto.CollectionQueryRequestDto;
 import sanlab.itv.nakivojpshared.request.CreateJobRequest;
-import sanlab.itv.nakivojpshared.response.CollectionQueryResponse;
+import sanlab.itv.nakivojpslaveowner.dto.CollectionQueryResponseDto;
 import sanlab.itv.nakivojpslaveowner.dto.JobDto;
 import sanlab.itv.nakivojpslaveowner.service.CrudJobService;
 import sanlab.itv.nakivojpslaveowner.service.JobProcessingService;
@@ -28,7 +29,7 @@ public class JobController {
     private final JobProcessingService processingService;
 
     @GetMapping
-    public ResponseEntity<CollectionQueryResponse<JobDto>> getAll(@ModelAttribute CollectionQueryRequest req) {
+    public ResponseEntity<CollectionQueryResponseDto<JobDto>> getAll(@ModelAttribute CollectionQueryRequestDto req) {
         var result = crudJobService.getAll(req);
         return ResponseEntity.ok(result);
     }
@@ -50,6 +51,5 @@ public class JobController {
         processingService.process();
         return ResponseEntity.accepted().build();
     }
-
 
 }

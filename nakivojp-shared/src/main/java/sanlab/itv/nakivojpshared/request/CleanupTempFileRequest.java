@@ -31,6 +31,7 @@ public class CleanupTempFileRequest implements CreateJobRequest {
     @Builder
     public static class Payload implements CreateJobRequestPayload {
         private String directory;
+        private Boolean fail;
     }
 
 }

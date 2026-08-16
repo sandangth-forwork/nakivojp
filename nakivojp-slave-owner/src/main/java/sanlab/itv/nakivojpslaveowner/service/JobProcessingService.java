@@ -1,6 +1,8 @@
 package sanlab.itv.nakivojpslaveowner.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sanlab.itv.nakivojpshared.constant.EJobStatus;
 import sanlab.itv.nakivojpshared.constant.EJobType;
 import sanlab.itv.nakivojpshared.eventrequest.JobProcessingEvent;
 import sanlab.itv.nakivojpslaveowner.model.Job;
@@ -25,9 +27,10 @@ public class JobProcessingService {
         this.jobQueueRepositoryMap = jobQueueRepositoryList.stream().collect(Collectors.toMap(JobQueueRepository::getType, Function.identity()));
     }
 
+    @Transactional
     public void process() {
-        var jobs = jobRepository.getAllByProcessableStatuses();
-        jobs.stream()
+        jobRepository.getAllByProcessableStatuses()
+            .stream()
             .filter(this::isNotUnknown)
             .forEach(inner -> {
                 var type = EJobType.fromStr(inner.getType());
@@ -36,6 +39,7 @@ public class JobProcessingService {
                     .payload(inner.getPayload())
                     .build();
                 jobQueueRepositoryMap.get(type).enqueue(event);
+                jobRepository.updateStatus(inner.getId(), EJobStatus.PROCESSING);
             });
     }
 

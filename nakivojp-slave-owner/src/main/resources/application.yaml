@@ -74,6 +74,12 @@ spring:
         sendJobResultHandler-in-0:
           binder: rabbit-binder
           destination: slave.send-job-result
+  rabbitmq:
+    host: ${app.job-queue.host}
+    port: ${app.job-queue.port}
+    username: guest
+    password: guest
+    virtual-host: /
 
 springdoc:
   swagger-ui:

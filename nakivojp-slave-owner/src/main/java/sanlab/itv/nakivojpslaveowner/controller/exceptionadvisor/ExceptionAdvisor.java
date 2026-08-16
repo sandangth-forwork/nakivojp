@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sanlab.itv.nakivojpslaveowner.dto.ErrorResponseDto;
 import sanlab.itv.nakivojpslaveowner.exception.DuplicatedRequestException;
-import sanlab.itv.nakivojpslaveowner.exception.NakivoJpRuntimeException;
+import sanlab.itv.nakivojpshared.exception.NakivoJpRuntimeException;
 import sanlab.itv.nakivojpslaveowner.exception.DataNotFoundException;
 import sanlab.itv.nakivojpslaveowner.exception.ProcessingCreateRequestException;
 

@@ -30,9 +30,10 @@ public class ProcessVideoRequest implements CreateJobRequest {
     @AllArgsConstructor
     @Builder
     public static class Payload implements CreateJobRequestPayload {
-        private String recipient;
-        private String subject;
-        private String body;
+        private String videoUrl;
+        private String outputFormat;
+        private String webhookUrl;
+        private Boolean fail;
     }
 
 }

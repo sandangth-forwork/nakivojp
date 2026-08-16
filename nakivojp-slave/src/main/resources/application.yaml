@@ -1,8 +1,7 @@
+server:
+  port: 9091
+
 spring:
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   main:
     banner-mode: console
   application:
@@ -28,24 +27,78 @@ spring:
         sendEmailJobHandler-in-0:
           binder: rabbit-binder
           destination: slave-owner.send-email
+          consumer:
+            max-attempts: 5 # Make sure this is greater than 3
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
+            default-retryable: false
+            retryable-exceptions:
+              sanlab.itv.nakivojpslave.exception.JobProcessIngException: true
         sendSmsJobHandler-in-0:
           binder: rabbit-binder
           destination: slave-owner.send-sms
+          consumer:
+            max-attempts: 5
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
+            default-retryable: false
+            retryable-exceptions:
+              sanlab.itv.nakivojpslave.exception.JobProcessIngException: true
         syncExternalDataJobHandler-in-0:
           binder: rabbit-binder
           destination: slave-owner.sync-external-data
+          consumer:
+            max-attempts: 5
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
+            default-retryable: false
+            retryable-exceptions:
+              sanlab.itv.nakivojpslave.exception.JobProcessIngException: true
         scrapeWebsiteJobHandler-in-0:
           binder: rabbit-binder
           destination: slave-owner.scrape-website
+          consumer:
+            max-attempts: 5
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
+            default-retryable: false
+            retryable-exceptions:
+              sanlab.itv.nakivojpslave.exception.JobProcessIngException: true
         processVideoJobHandler-in-0:
           binder: rabbit-binder
           destination: slave-owner.process-video
+          consumer:
+            max-attempts: 5
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
+            default-retryable: false
+            retryable-exceptions:
+              sanlab.itv.nakivojpslave.exception.JobProcessIngException: true
         cleanupTempFileJobHandler-in-0:
           binder: rabbit-binder
           destination: slave-owner.cleanup-temp-file
+          consumer:
+            max-attempts: 5
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
+            default-retryable: false
+            retryable-exceptions:
+              sanlab.itv.nakivojpslave.exception.JobProcessIngException: true
         sendJobResult-out-0:
           binder: rabbit-binder
           destination: slave.send-job-result
+  rabbitmq:
+    host: ${app.job-queue.host}
+    port: ${app.job-queue.port}
+    username: guest
+    password: guest
+    virtual-host: /
 
 management:
   info:

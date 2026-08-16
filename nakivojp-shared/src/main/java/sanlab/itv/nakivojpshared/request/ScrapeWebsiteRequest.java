@@ -35,6 +35,7 @@ public class ScrapeWebsiteRequest implements CreateJobRequest {
     public static class Payload implements CreateJobRequestPayload {
         private String url;
         private List<String> keywords;
+        private Boolean fail;
     }
 
 }

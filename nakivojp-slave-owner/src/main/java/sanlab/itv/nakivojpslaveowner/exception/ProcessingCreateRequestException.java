@@ -1,5 +1,7 @@
 package sanlab.itv.nakivojpslaveowner.exception;
 
+import sanlab.itv.nakivojpshared.exception.NakivoJpRuntimeException;
+
 public class ProcessingCreateRequestException extends NakivoJpRuntimeException {
 
     private static final String UNABLE_TO_HASH_CREATING_REQUEST = "Unable to hash a creating request.";

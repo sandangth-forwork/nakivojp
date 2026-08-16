@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sanlab.itv.nakivojpshared.constant.EJobStatus;
 import sanlab.itv.nakivojpshared.constant.EJobType;
-import sanlab.itv.nakivojpshared.request.CollectionQueryRequest;
+import sanlab.itv.nakivojpslaveowner.dto.CollectionQueryRequestDto;
 import sanlab.itv.nakivojpshared.request.CreateJobRequest;
-import sanlab.itv.nakivojpshared.response.CollectionQueryResponse;
-import sanlab.itv.nakivojpshared.utils.CollectionQueryUtils;
+import sanlab.itv.nakivojpslaveowner.dto.CollectionQueryResponseDto;
+import sanlab.itv.nakivojpslaveowner.utils.CollectionQueryUtils;
 import sanlab.itv.nakivojpshared.utils.DateTimeUtils;
 import sanlab.itv.nakivojpslaveowner.dto.JobDto;
 import sanlab.itv.nakivojpslaveowner.exception.DataNotFoundException;
@@ -38,11 +38,11 @@ public class CrudJobService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionQueryResponse<JobDto> getAll(CollectionQueryRequest req) {
+    public CollectionQueryResponseDto<JobDto> getAll(CollectionQueryRequestDto req) {
         PageRequest pageRequest = CollectionQueryUtils.toPageRequest(req);
         String status = StringUtils.isEmpty(req.getStatus()) ? StringUtil.EMPTY_STRING : EJobStatus.fromStr(req.getStatus()).name();
         Page<Job> pageResult = jobRepository.getAllByStatus(status, pageRequest);
-        return CollectionQueryResponse.<JobDto>builder()
+        return CollectionQueryResponseDto.<JobDto>builder()
             .total(pageResult.getTotalElements())
             .totalPages(pageResult.getTotalPages())
             .page(pageResult.getNumber())

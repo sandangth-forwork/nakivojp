@@ -1,5 +1,7 @@
 package sanlab.itv.nakivojpslaveowner.exception;
 
+import sanlab.itv.nakivojpshared.exception.NakivoJpRuntimeException;
+
 public class DuplicatedRequestException extends NakivoJpRuntimeException {
 
     private static final String JOB_WITH_ID_EXISTS = "This job has already existed, id: %s";

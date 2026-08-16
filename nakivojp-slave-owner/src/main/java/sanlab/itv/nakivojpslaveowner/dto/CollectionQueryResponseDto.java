@@ -1,4 +1,4 @@
-package sanlab.itv.nakivojpshared.response;
+package sanlab.itv.nakivojpslaveowner.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class CollectionQueryResponse<T> {
+public class CollectionQueryResponseDto<T> {
 
     private long total;
     private long page;

@@ -32,6 +32,7 @@ public class SendSmsRequest implements CreateJobRequest {
     public static class Payload implements CreateJobRequestPayload {
         private String phoneNumber;
         private String message;
+        private Boolean fail;
     }
 
 }

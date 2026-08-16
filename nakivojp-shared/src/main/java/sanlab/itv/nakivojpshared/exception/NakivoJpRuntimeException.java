@@ -1,4 +1,4 @@
-package sanlab.itv.nakivojpslaveowner.exception;
+package sanlab.itv.nakivojpshared.exception;
 
 import lombok.Getter;
 

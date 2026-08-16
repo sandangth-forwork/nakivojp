@@ -32,6 +32,7 @@ public class SyncExternalDataRequest implements CreateJobRequest {
     public static class Payload implements CreateJobRequestPayload {
         private String apiEndpoint;
         private String authToken;
+        private Boolean fail;
     }
 
 }
