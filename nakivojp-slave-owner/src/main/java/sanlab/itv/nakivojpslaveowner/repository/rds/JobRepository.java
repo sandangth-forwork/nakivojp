@@ -16,6 +16,7 @@ public interface JobRepository extends JpaRepository<Job, UUID>, JobExtendedRepo
     @Query(value = """
         SELECT j FROM Job j
         WHERE :status IS NULL OR :status = '' OR j.status = :status
+        ORDER BY j.createdAt DESC
     """, countQuery = """
         SELECT COUNT(DISTINCT j) FROM Job j
         WHERE :status IS NULL OR :status = '' OR j.status = :status
